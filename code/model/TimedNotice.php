@@ -7,10 +7,10 @@
  **/
 class TimedNotice extends DataObject implements PermissionProvider {
 
-	private static $singular_name 	= 'Timed Notice';
-	private static $plural_name	 	= 'Timed Notices';
+	public static $singular_name 	= 'Timed Notice';
+	public static $plural_name	 	= 'Timed Notices';
 	
-	private static $db = array(
+	public static $db = array(
 		'Message' 		=> 'Text',
 		'MessageType' 	=> 'Varchar',
 		'StartTime' 	=> 'SS_DateTime',
@@ -18,11 +18,15 @@ class TimedNotice extends DataObject implements PermissionProvider {
 		'CanViewType' 	=> "Enum('LoggedInUsers, OnlyTheseUsers', 'LoggedInUsers')"
 	);
 
-	private static $many_many = array(
+	public static $many_many = array(
 		'ViewerGroups' 	=> 'Group'
 	);
 
-	private static $summary_fields = array(
+	public static $defaults = array(
+		'CanViewType' 	=> 'LoggedInUsers'
+	);
+
+	public static $summary_fields = array(
 		'StartTime' 	=> "Start Time",
 		'EndTime'		=> "End Time",
 		'StatusLabel'	=> "Status",
@@ -30,17 +34,17 @@ class TimedNotice extends DataObject implements PermissionProvider {
 		'Message' 		=> "Message",
 	);
 
-	private static $searchable_fields = array(
+	public static $searchable_fields = array(
 		'MessageType'
 	);
 
-	private static $message_types = array(
+	public static $message_types = array(
 		'good',
 		'warning',
 		'bad'
 	);
 
-	private static $status_options = array(
+	public static $status_options = array(
 		'Current',
 		'Future',
 		'Expired'
@@ -78,7 +82,7 @@ class TimedNotice extends DataObject implements PermissionProvider {
 			'MessageType', 
 			'Message Type', 
 			ArrayLib::valuekey($this->config()->get('message_types'))
-		));
+		), 'Message');
 
 		$fields->addFieldToTab(
 			'Root.Main', 
@@ -92,15 +96,6 @@ class TimedNotice extends DataObject implements PermissionProvider {
 		
 		$start->getDateField()->setConfig('showcalendar',true);
 		$end->getDateField()->setConfig('showcalendar',true);
-
-		$start->setTimeField(
-			TimePickerField::create('StartTime[time]', '')
-				->addExtraClass('fieldgroup-field')
-		);
-		$end->setTimeField(
-			TimePickerField::create('EndTime[time]', '')
-				->addExtraClass('fieldgroup-field')
-		);
 
 		return $fields;
 	}

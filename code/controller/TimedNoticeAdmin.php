@@ -7,15 +7,15 @@
  **/
 class TimedNoticeAdmin extends ModelAdmin {
 
-	private static $managed_models = array(
+	public static $managed_models = array(
 		'TimedNotice'
 	);
 	
-	private static $url_segment = 'time-notices';
+	public static $url_segment = 'time-notices';
 	
-	private static $menu_title = 'Timed Notices';
+	public static $menu_title = 'Timed Notices';
 
-	private static $menu_icon = 'timednotices/images/bell.png';
+	public static $menu_icon = 'timednotices/images/bell.png';
 
 	public $showImportForm = false;
 	
@@ -39,7 +39,7 @@ class TimedNoticeAdmin extends ModelAdmin {
 			DropdownField::create(
 				'q[MessageType]', 
 				'Message Type', 
-				ArrayLib::valuekey(Config::inst()->get('TimedNotice', 'message_types')),
+				ArrayLib::valuekey(TimedNotice::$message_types),
 				isset($q['MessageType']) ? $q['MessageType'] : null
 			)->setEmptyString(' ')
 		);
@@ -48,7 +48,7 @@ class TimedNoticeAdmin extends ModelAdmin {
 			DropdownField::create(
 				'q[Status]', 
 				'Status', 
-				ArrayLib::valuekey(Config::inst()->get('TimedNotice', 'status_options')),
+				ArrayLib::valuekey(TimedNotice::$status_options),
 				isset($q['Status']) ? $q['Status'] : null
 			)->setEmptyString(' ')
 		);
